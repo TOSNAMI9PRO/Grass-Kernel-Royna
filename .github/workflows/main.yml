@@ -33,7 +33,13 @@ jobs:
         if: success()
         uses: actions/upload-artifact@main
         with:
-          name: "GrassKernel_${{matrix.device}}_${{matrix.build_type}}_Clang${{matrix.clang_ver}}${{ (matrix.extra_flags == '--no-ksu') && '' || (matrix.extra_flags == '') && '(KernelSU)' || '('}}{{matrix.extra_flags}}{{')'}}.zip"
+          name: |
+            GrassKernel_${{matrix.device}}_${{matrix.build_type}}_Clang${{matrix.clang_ver}}${
+              {# Conditional logic for extra_flags }
+              if matrix.extra_flags == '--no-ksu' then '' 
+              else if matrix.extra_flags == '' then '(KernelSU)'
+              else '(' + matrix.extra_flags + ')'
+            }.zip
           path: "Grass*"
           if-no-files-found: error
 
@@ -41,6 +47,12 @@ jobs:
         if: always()
         uses: actions/upload-artifact@main
         with:
-          name: "GrassKernel_${{matrix.device}}_${{matrix.build_type}}_Clang${{matrix.clang_ver}}${{ (matrix.extra_flags == '--no-ksu') && '' || (matrix.extra_flags == '') && '(KernelSU)' || '('}}{{matrix.extra_flags}}{{')'}}-LOG.zip"
+          name: |
+            GrassKernel_${{matrix.device}}_${{matrix.build_type}}_Clang${{matrix.clang_ver}}${
+              {# Conditional logic for extra_flags }
+              if matrix.extra_flags == '--no-ksu' then '' 
+              else if matrix.extra_flags == '' then '(KernelSU)'
+              else '(' + matrix.extra_flags + ')'
+            }-LOG.zip
           path: "*.log"
           if-no-files-found: warn
