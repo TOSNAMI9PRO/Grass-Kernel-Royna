@@ -95,8 +95,8 @@ def main():
         print("Please specify one of the following variants: --oneui or --aosp")
         return
     
-    if not args.target in ['a51', 'm21', 'm31', 'm31s', 'f41', 'm30s']:
-        print("Please specify a valid target: a51/m21/m31/m31s/f41/m30s")
+    if not args.target in ['a51', 'm21', 'm31', 'm31s', 'f41', 'm30s', 'gta4xl']:
+        print("Please specify a valid target: a51/m21/m31/m31s/f41/m30s/gta4xl")
         return
     
     # Check files
