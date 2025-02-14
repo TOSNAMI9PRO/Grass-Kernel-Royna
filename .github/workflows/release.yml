@@ -18,6 +18,7 @@ jobs:
       - name: Download Artifacts
         uses: actions/download-artifact@main
         with:
+           merge-multiple: true
            path: /home/runner
 
       - name: Get Current Date
@@ -30,4 +31,4 @@ jobs:
           name: "${{steps.date.outputs.date}}"
           tag_name: "${{steps.date.outputs.date}}"
           prerelease: false
-          files: /home/runner/*.zip
+          files: /home/runner/Grass*/*.zip
