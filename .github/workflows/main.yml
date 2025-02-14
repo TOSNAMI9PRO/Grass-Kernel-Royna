@@ -26,14 +26,17 @@ jobs:
           rm -rf toolchain && mkdir toolchain && tar -xvf weebx-clang.tar.gz -C toolchain && rm -rf weebx-clang.tar.gz
           
       - name: Build
-        run: python build_kernel.py --${{toLower(matrix.build_type)}} --target=${{matrix.device}}
+        run: |
+          BUILD_TYPE_LOWER=$(echo "${{matrix.build_type}}" | tr '[:upper:]' '[:lower:]')
+          python build_kernel.py --$BUILD_TYPE_LOWER --target=${{matrix.device}}
+          mv GrassKernel_*_*_*.zip "GrassKernel_${{matrix.device}}_${{matrix.build_type}}_Clang${{matrix.clang_ver}}.zip"
 
       - name: Upload Kernel
         if: success()
         uses: actions/upload-artifact@main
         with:
           name: GrassKernel_${{matrix.device}}_${{matrix.build_type}}_Clang${{matrix.clang_ver}}
-          path: "GrassKernel_*_*_*.zip"
+          path: "GrassKernel_${{matrix.device}}_${{matrix.build_type}}_Clang${{matrix.clang_ver}}.zip"
           if-no-files-found: error
 
       - name: Upload Logs
