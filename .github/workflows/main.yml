@@ -9,9 +9,10 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
+        build_type: ['AOSP', 'OneUI']
         device: ['a51', 'm21', 'm31', 'm31s', 'f41', 'm30s']
         clang_ver: ['19.1.5', '18.1.8']
-    name: "Build for ${{matrix.device}} (Clang ${{matrix.clang_ver}})"
+    name: "Build for ${{matrix.device}} ${{matrix.build_type}} (Clang ${{matrix.clang_ver}})"
     steps:
       - name: Checkout
         uses: actions/checkout@main
@@ -25,20 +26,20 @@ jobs:
           rm -rf toolchain && mkdir toolchain && tar -xvf weebx-clang.tar.gz -C toolchain && rm -rf weebx-clang.tar.gz
           
       - name: Build
-        run: python build_kernel.py --oneui --target=${{matrix.device}}
+        run: python build_kernel.py --${{toLower(matrix.build_type)}} --target=${{matrix.device}}
 
       - name: Upload Kernel
         if: success()
         uses: actions/upload-artifact@main
         with:
-          name: GrassKernel_${{matrix.device}}_OneUI_Clang${{matrix.clang_ver}}
-          path: "Grass*"
+          name: GrassKernel_${{matrix.device}}_${{matrix.build_type}}_Clang${{matrix.clang_ver}}
+          path: "GrassKernel_*_*_*.zip"
           if-no-files-found: error
 
       - name: Upload Logs
-        if: always()
+        if: failure()
         uses: actions/upload-artifact@main
         with:
-          name: GrassKernel_${{matrix.device}}_OneUI_Clang${{matrix.clang_ver}}-LOG
+          name: GrassKernel_${{matrix.device}}_${{matrix.build_type}}_Clang${{matrix.clang_ver}}-LOG
           path: "*.log"
           if-no-files-found: warn
