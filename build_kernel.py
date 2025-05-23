@@ -85,7 +85,7 @@ def main():
     parser.add_argument('--oneui', action='store_true', help="OneUI variant")
     parser.add_argument('--aosp', action='store_true', help="AOSP variant")
     parser.add_argument('--target', type=str, required=True, help="Target device (a51/m21/...)")
-    parser.add_argument('--no-ksu', action='store_true', help="Don't include KernelSU support in kernel")
+    parser.add_argument('--no-ksun', action='store_true', help="Don't include KernelSU Next support in kernel")
     parser.add_argument('--allow-dirty', action='store_true', help="Allow dirty build")
 
     # Parse the arguments
@@ -114,7 +114,7 @@ def main():
         'TARGET_KERNEL': 'Grass',
         'TARGET_VARIANT': variantStr,
         'TARGET_DEVICE': args.target,
-        'TARGET_INCLUDES_KSU': not args.no_ksu,
+        'TARGET_INCLUDES_KSUN': not args.no_ksun,
         'TARGET_USES_LLVM': True,
         'TOOLCHAIN': CompilerClang.get_version(),
     })
@@ -133,7 +133,7 @@ def main():
     make_common = ['make', 'O=out', 'LLVM=1', f'-j{os.cpu_count()}']
     make_defconfig += make_common 
     defconfigs = [f'{args.target}_defconfig', 'grass.config', f'{args.target}.config']
-    if not args.no_ksu:
+    if not args.no_ksun:
         defconfigs.append('ksu.config')
     if args.aosp:
         defconfigs.append('aosp.config')
