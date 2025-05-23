@@ -1,7 +1,7 @@
 [submodule "KernelSU"]
 	path = KernelSU
-	url = https://github.com/backslashxx/KernelSU
-	branch = 12083+sus155
+	url = https://github.com/KernelSU-Next/KernelSU-Next
+	branch = next-susfs
 [submodule "AnyKernel3"]
 	path = AnyKernel3
 	url = https://github.com/HomuHomu833/AnyKernel3-Universal9611/
