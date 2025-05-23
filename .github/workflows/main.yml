@@ -35,8 +35,8 @@ jobs:
         if: success()
         uses: actions/upload-artifact@main
         with:
-          name: GrassKernel_${{matrix.device}}_${{matrix.build_type}}
-          path: "GrassKernel_${{matrix.device}}_${{matrix.build_type}}.zip"
+          name: GrassKernel_${{matrix.device}}_${{matrix.build_type}}-KSUN
+          path: "GrassKernel_${{matrix.device}}_${{matrix.build_type}}-KSUN.zip"
           if-no-files-found: error
 
       - name: Upload Logs
