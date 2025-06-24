@@ -130,7 +130,7 @@ def main():
         shutil.rmtree(outDir)
     
     make_defconfig = []
-    make_common = ['make', 'O=out', 'LLVM=1', f'-j{os.cpu_count()}']
+    make_common = ['make', 'O=out', 'LLVM=1', "KCFLAGS=-Wno-implicit-function-declaration -Wno-c23-extensions -Wno-misleading-indentation", f'-j{os.cpu_count()}']
     make_defconfig += make_common 
     defconfigs = [f'{args.target}_defconfig', 'grass.config', f'{args.target}.config']
     if not args.no_ksun:

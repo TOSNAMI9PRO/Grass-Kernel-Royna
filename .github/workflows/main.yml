@@ -24,7 +24,24 @@ jobs:
         run: |
           wget https://github.com/XSans0/WeebX-Clang/releases/download/WeebX-Clang-18.1.8-release/WeebX-Clang-18.1.8.tar.gz -O "weebx-clang.tar.gz"
           rm -rf toolchain && mkdir toolchain && tar -xvf weebx-clang.tar.gz -C toolchain && rm -rf weebx-clang.tar.gz
-          
+
+      - name: Patch SusFS
+        run: |
+          # Remove Previous SusFS Patch
+          curl -Ls https://github.com/fatalcoder524/Grass-Kernel-Royna/commit/0dd9d6f2ce79732b8eab9b4c74f0f708ab75f8c8.patch | sed '1,32d' | patch -p1 -F 3 -R
+          curl -Ls https://github.com/fatalcoder524/Grass-Kernel-Royna/commit/e179cc3ed9d125b4c674c2a1044f7432fa647954.patch | patch -p1 -F 3 -R
+          curl -Ls https://github.com/fatalcoder524/Grass-Kernel-Royna/commit/38e702c67b0c6eab8efef0047b89bf4675f1e222.patch | sed '1,68d' | patch -p1 -F 3 -R
+          curl -Ls https://github.com/fatalcoder524/Grass-Kernel-Royna/commit/779977be570bea19acdadaf91cd17866a85434b0.patch | patch -p1 -F 3 -R
+          curl -Ls https://github.com/fatalcoder524/Grass-Kernel-Royna/commit/7849668cd09a2041886447c0ef810042633d9024.patch | sed '1,71d' | patch -p1 -F 3 -R
+          # Apply Ptrace Patch
+          curl -Ls https://github.com/sidex15/android_kernel_lge_sm8150/commit/fcc59dc3310d3a1511d02dc3ac6d1e113517ece1.patch | patch -p1 -F 3
+          # Apply New SusFS Patch
+          curl -Ls https://github.com/sidex15/android_kernel_lge_sm8150/commit/27753f82d113185d8e1c89efd029710ae86fa155.patch | sed '1,82d; 98,671d; 676,686d; 699,$d' | patch -p1 -F 3
+          curl -Ls https://github.com/sidex15/android_kernel_lge_sm8150/commit/9267165e7cd7bcafeee3ffb4d60d4e4141c1deb7.patch | patch -p1 -F 3
+          curl -Ls https://github.com/sidex15/android_kernel_lge_sm8150/commit/199bcab545a84eaadb5a1ba944675357de58a126.patch | patch -p1 -F 3
+          cd KernelSU
+          curl -Ls https://raw.githubusercontent.com/WildKernels/kernel_patches/refs/heads/main/next/0001-kernel-implement-susfs-v1.5.8-KernelSU-Next-v1.0.8.patch | patch -p1 -F 3
+
       - name: Build
         run: |
           sed -i '/# .git is a text file/,/endif/c\ccflags-y += -DKSU_VERSION=12602' KernelSU/kernel/Makefile
