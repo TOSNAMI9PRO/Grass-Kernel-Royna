@@ -36,11 +36,13 @@ jobs:
           # Apply Ptrace Patch
           curl -Ls https://github.com/sidex15/android_kernel_lge_sm8150/commit/fcc59dc3310d3a1511d02dc3ac6d1e113517ece1.patch | patch -p1 -F 3
           # Apply New SusFS Patch
-          curl -Ls https://github.com/sidex15/android_kernel_lge_sm8150/commit/27753f82d113185d8e1c89efd029710ae86fa155.patch | sed '1,82d; 98,671d; 676,686d; 699,$d' | patch -p1 -F 3
-          curl -Ls https://github.com/sidex15/android_kernel_lge_sm8150/commit/9267165e7cd7bcafeee3ffb4d60d4e4141c1deb7.patch | patch -p1 -F 3
-          curl -Ls https://github.com/sidex15/android_kernel_lge_sm8150/commit/199bcab545a84eaadb5a1ba944675357de58a126.patch | patch -p1 -F 3
+          curl -Ls https://github.com/sidex15/android_kernel_lge_sm8150/commit/026feb240991ef572b5f75e9a9afe3fa17c7662f.patch | patch -p1 -F 3
+          # curl -Ls https://github.com/sidex15/android_kernel_lge_sm8150/commit/27753f82d113185d8e1c89efd029710ae86fa155.patch | sed '1,82d; 98,671d; 676,686d; 699,$d' | patch -p1 -F 3
+          # curl -Ls https://github.com/sidex15/android_kernel_lge_sm8150/commit/9267165e7cd7bcafeee3ffb4d60d4e4141c1deb7.patch | patch -p1 -F 3
+          # curl -Ls https://github.com/sidex15/android_kernel_lge_sm8150/commit/199bcab545a84eaadb5a1ba944675357de58a126.patch | patch -p1 -F 3
           cd KernelSU
-          curl -Ls https://raw.githubusercontent.com/WildKernels/kernel_patches/refs/heads/main/next/0001-kernel-implement-susfs-v1.5.8-KernelSU-Next-v1.0.8.patch | patch -p1 -F 3
+          patch -p1 -F 3 < ./Patches/0001-kernel-implement-susfs-v1.5.8-KernelSU-Next-v1.0.8.patch
+          # curl -Ls https://raw.githubusercontent.com/WildKernels/kernel_patches/refs/heads/main/next/0001-kernel-implement-susfs-v1.5.8-KernelSU-Next-v1.0.8.patch | patch -p1 -F 3
 
       - name: Build
         run: |
