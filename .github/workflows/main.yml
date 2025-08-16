@@ -27,22 +27,17 @@ jobs:
 
       - name: Patch SusFS
         run: |
-          # Remove Previous SusFS Patch
-          curl -Ls https://github.com/fatalcoder524/Grass-Kernel-Royna/commit/0dd9d6f2ce79732b8eab9b4c74f0f708ab75f8c8.patch | sed '1,32d' | patch -p1 -F 3 -R
-          curl -Ls https://github.com/fatalcoder524/Grass-Kernel-Royna/commit/e179cc3ed9d125b4c674c2a1044f7432fa647954.patch | patch -p1 -F 3 -R
-          curl -Ls https://github.com/fatalcoder524/Grass-Kernel-Royna/commit/38e702c67b0c6eab8efef0047b89bf4675f1e222.patch | sed '1,68d' | patch -p1 -F 3 -R
-          curl -Ls https://github.com/fatalcoder524/Grass-Kernel-Royna/commit/779977be570bea19acdadaf91cd17866a85434b0.patch | patch -p1 -F 3 -R
-          curl -Ls https://github.com/fatalcoder524/Grass-Kernel-Royna/commit/7849668cd09a2041886447c0ef810042633d9024.patch | sed '1,71d' | patch -p1 -F 3 -R
-          # Apply Ptrace Patch
-          curl -Ls https://github.com/sidex15/android_kernel_lge_sm8150/commit/fcc59dc3310d3a1511d02dc3ac6d1e113517ece1.patch | patch -p1 -F 3
           # Apply New SusFS Patch
-          curl -Ls https://github.com/sidex15/android_kernel_lge_sm8150/commit/026feb240991ef572b5f75e9a9afe3fa17c7662f.patch | patch -p1 -F 3
-          curl -Ls https://github.com/sidex15/android_kernel_lge_sm8150/commit/199bcab545a84eaadb5a1ba944675357de58a126.patch | sed '1,46d' | patch -p1 -F 3
-          sed -i '/#define DATA_ADB_UMOUNT_FOR_ZYGOTE_SYSTEM_PROCESS/ a #define DATA_ADB_UMOUNT_FOR_ZYGOTE_ISO_SERVICE "/data/adb/susfs_umount_for_zygote_iso_service"' ./include/linux/susfs_def.h
-          sed -i '/#define CMD_SUSFS_ADD_SUS_PATH/ i #define CMD_SUSFS_UMOUNT_FOR_ZYGOTE_ISO_SERVICE 0x55562' ./include/linux/susfs_def.h
-          
+          curl -Ls https://github.com/sidex15/android_kernel_lge_sm8150/commit/b19a27ceed937d961a7236e4adc85b0885d1f03e.patch | patch -p1 -F 3
+          curl -Ls https://github.com/sidex15/android_kernel_lge_sm8150/commit/4990033cc5d0a05e237a63832c1e4e73cccbd396.patch | patch -p1 -F 3
+          curl -Ls https://github.com/sidex15/android_kernel_lge_sm8150/commit/a21bd1ce75530143b1044b0873e01e5b1d55344d.patch | patch -p1 -F 3
+          curl -Ls https://github.com/sidex15/android_kernel_lge_sm8150/commit/cb156baa8ab03b8973874c05bb522d6ba98e73d5.patch | patch -p1 -F 3
+          curl -Ls https://github.com/sidex15/android_kernel_lge_sm8150/commit/3b4aba477404c32bc03b98b84e20664369ac6e7f.patch | patch -p1 -F 3
+          curl -Ls https://github.com/sidex15/android_kernel_lge_sm8150/commit/6cd98bc0b8b1e342b1858f8bf80ac77f84b60a14.patch | patch -p1 -F 3
+          # Apply New SusFS KSUN Patch
           cd KernelSU
-          patch -p1 -F 3 < ../Patches/0001-kernel-implement-susfs-v1.5.8-KernelSU-Next-v1.0.8.patch
+          curl -Ls https://github.com/sidex15/KernelSU-Next/commit/c623bb233be305f7dac7135d198d6b375aa33410.patch | patch -p1 -F 3
+          curl -Ls https://raw.githubusercontent.com/WildKernels/kernel_patches/refs/heads/main/next/susfs_fix_patches/v1.5.9/fix_kernel_compat.c.patch | patch -p1 -F 3
           cd ./kernel
           git submodule update --init --recursive
           BASE_VERSION=10200
