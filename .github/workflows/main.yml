@@ -34,9 +34,13 @@ jobs:
           curl -Ls https://github.com/sidex15/android_kernel_lge_sm8150/commit/cb156baa8ab03b8973874c05bb522d6ba98e73d5.patch | patch -p1 -F 3
           curl -Ls https://github.com/sidex15/android_kernel_lge_sm8150/commit/3b4aba477404c32bc03b98b84e20664369ac6e7f.patch | patch -p1 -F 3
           curl -Ls https://github.com/sidex15/android_kernel_lge_sm8150/commit/6cd98bc0b8b1e342b1858f8bf80ac77f84b60a14.patch | patch -p1 -F 3
+          curl -Ls https://github.com/sidex15/android_kernel_lge_sm8150/commit/77ca28a53924b5d3c63f29a35c51422253771681.patch | sed -e 's/static void avc_dump_query(struct audit_buffer \*ab, struct selinux_state \*state,/static void avc_dump_query(struct audit_buffer \*ab, u32 ssid, u32 tsid, u16 tclass)/' -e 's/security_sid_to_context(state, /security_sid_to_context(/' | patch -p1 -F 3
           # Apply New SusFS KSUN Patch
           cd KernelSU
           curl -Ls https://github.com/sidex15/KernelSU-Next/commit/c623bb233be305f7dac7135d198d6b375aa33410.patch | patch -p1 -F 3
+          curl -Ls https://github.com/sidex15/KernelSU-Next/commit/a9d4da3807a71841ae70a5f41a1d68d3f1ec798c.patch | patch -p1 -F 3
+          curl -Ls https://github.com/sidex15/KernelSU-Next/commit/70748684d2dc20dbd6b8ecdae7a9dbf6fc741046.patch | patch -p1 -F 3
+          curl -Ls https://github.com/sidex15/KernelSU-Next/commit/effdc4fc06820afde70dd1b5e94658304efdb2ab.patch | patch -p1 -F 3
           curl -Ls https://raw.githubusercontent.com/WildKernels/kernel_patches/refs/heads/main/next/susfs_fix_patches/v1.5.9/fix_kernel_compat.c.patch | patch -p1 -F 3
           cd ./kernel
           git submodule update --init --recursive
