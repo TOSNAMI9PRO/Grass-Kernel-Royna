@@ -28,25 +28,18 @@ jobs:
       - name: Patch SusFS
         run: |
           # Apply New SusFS Patch
-          curl -Ls https://github.com/sidex15/android_kernel_lge_sm8150/commit/b19a27ceed937d961a7236e4adc85b0885d1f03e.patch | patch -p1 -F 3
-          curl -Ls https://github.com/sidex15/android_kernel_lge_sm8150/commit/4990033cc5d0a05e237a63832c1e4e73cccbd396.patch | patch -p1 -F 3
-          curl -Ls https://github.com/sidex15/android_kernel_lge_sm8150/commit/a21bd1ce75530143b1044b0873e01e5b1d55344d.patch | patch -p1 -F 3
-          curl -Ls https://github.com/sidex15/android_kernel_lge_sm8150/commit/cb156baa8ab03b8973874c05bb522d6ba98e73d5.patch | patch -p1 -F 3
-          curl -Ls https://github.com/sidex15/android_kernel_lge_sm8150/commit/3b4aba477404c32bc03b98b84e20664369ac6e7f.patch | patch -p1 -F 3
-          curl -Ls https://github.com/sidex15/android_kernel_lge_sm8150/commit/6cd98bc0b8b1e342b1858f8bf80ac77f84b60a14.patch | patch -p1 -F 3
-          curl -Ls https://github.com/sidex15/android_kernel_lge_sm8150/commit/77ca28a53924b5d3c63f29a35c51422253771681.patch | sed -e 's/static void avc_dump_query(struct audit_buffer \*ab, struct selinux_state \*state,/static void avc_dump_query(struct audit_buffer \*ab, u32 ssid, u32 tsid, u16 tclass)/' -e 's/security_sid_to_context(state, /security_sid_to_context(/' | patch -p1 -F 3
+          curl -Ls https://github.com/sidex15/android_kernel_lge_sm8150/commit/bb2f164bc19795ef704f17c82f04885d44421418.patch | sed -e 's/static void avc_dump_query(struct audit_buffer \*ab, struct selinux_state \*state,/static void avc_dump_query(struct audit_buffer \*ab, u32 ssid, u32 tsid, u16 tclass)/' -e 's/security_sid_to_context(state, /security_sid_to_context(/' | patch -p1 -F 3
+          curl -Ls https://github.com/sidex15/android_kernel_lge_sm8150/commit/1f4ef7d7978c4a74812c2445ebfac02fd451e068.patch | patch -p1 -F 3
+          curl -Ls https://github.com/sidex15/android_kernel_lge_sm8150/commit/65fb7abff9ce217729b0c4cddf76e76522b636b6.patch | patch -p1 -F 3
           # Apply New SusFS KSUN Patch
           cd KernelSU
-          curl -Ls https://github.com/sidex15/KernelSU-Next/commit/c623bb233be305f7dac7135d198d6b375aa33410.patch | patch -p1 -F 3
-          curl -Ls https://github.com/sidex15/KernelSU-Next/commit/effdc4fc06820afde70dd1b5e94658304efdb2ab.patch | patch -p1 -F 3
-          curl -Ls https://raw.githubusercontent.com/WildKernels/kernel_patches/refs/heads/main/next/susfs_fix_patches/v1.5.9/fix_apk_sign.c.patch | sed '3,11d' | patch -p1 -F 3
-          curl -Ls https://raw.githubusercontent.com/WildKernels/kernel_patches/refs/heads/main/next/susfs_fix_patches/v1.5.9/fix_kernel_compat.c.patch | patch -p1 -F 3
+          curl -Ls https://github.com/sidex15/KernelSU-Next/commit/7200f73a7b4d0777217ead34fe9322978840df88.patch | patch -p1 -F 3
           cd ./kernel
           git submodule update --init --recursive
-          BASE_VERSION=10200
+          BASE_VERSION=20000
           KSU_VERSION=$(expr $(/usr/bin/git rev-list --count HEAD) "+" $BASE_VERSION)
           echo "KSUVER=$KSU_VERSION" >> $GITHUB_ENV
-          sed -i "s/DKSU_VERSION=11998/DKSU_VERSION=${KSU_VERSION}/" Makefile
+          sed -i "s/DKSU_VERSION=16/DKSU_VERSION=${KSU_VERSION}/" Makefile
 
       - name: Build
         run: |
