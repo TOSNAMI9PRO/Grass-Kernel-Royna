@@ -28,8 +28,13 @@ jobs:
       - name: Patch SusFS
         run: |
           # Apply New SusFS Patch
+          # Manual hooks v1.6
+          curl -Ls https://raw.githubusercontent.com/WildKernels/kernel_patches/refs/heads/main/next/scope_min_manual_hooks_v1.6.patch | sed 's/static int do_execve/int do_execve/' | patch -p1 -F 3
+          # susfs 2.0
           curl -Ls https://github.com/sidex15/android_kernel_lge_sm8150/commit/bb2f164bc19795ef704f17c82f04885d44421418.patch | sed -e 's/static void avc_dump_query(struct audit_buffer \*ab, struct selinux_state \*state,/static void avc_dump_query(struct audit_buffer \*ab, u32 ssid, u32 tsid, u16 tclass)/' -e 's/security_sid_to_context(state, /security_sid_to_context(/' | patch -p1 -F 3
+          # increase mnt id
           curl -Ls https://github.com/sidex15/android_kernel_lge_sm8150/commit/1f4ef7d7978c4a74812c2445ebfac02fd451e068.patch | patch -p1 -F 3
+          # dehook inline hooks
           curl -Ls https://github.com/sidex15/android_kernel_lge_sm8150/commit/65fb7abff9ce217729b0c4cddf76e76522b636b6.patch | patch -p1 -F 3
           # Apply New SusFS KSUN Patch
           cd KernelSU
