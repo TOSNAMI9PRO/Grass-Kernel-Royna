@@ -30,12 +30,16 @@ jobs:
           # Apply New SusFS Patch
           # Manual hooks v1.6
           curl -Ls https://raw.githubusercontent.com/WildKernels/kernel_patches/refs/heads/main/next/scope_min_manual_hooks_v1.6.patch | sed 's/static int do_execve/int do_execve/' | patch -p1 -F 3
+          # Add compat hooks and other fixes for hooks
+          sed -i -e '/static int do_execveat_common/i\\' -e '/^static int compat_do_execve(struct filename \*filename/,/^}/ s/^[[:space:]]*return do_execveat_common(AT_FDCWD, filename, argv, envp, 0);/#ifdef CONFIG_KSU \/\/ 32-bit ksud and 32-on-64 support\n\tksu_handle_execveat((int \*)AT_FDCWD, \&filename, \&argv, \&envp, 0);\n#endif\n\terror = vfs_fstatat(dfd, filename, &stat, flag);/' fs/exec.c
+          sed -i '/^SYSCALL_DEFINE4(fstatat64/,/^}/ s/^[[:space:]]*error = vfs_fstatat(dfd, filename, &stat, flag);/#ifdef CONFIG_KSU \/\/ 32-bit su\n\tksu_handle_stat(\&dfd, \&filename, \&flag);\n#endif\n\terror = vfs_fstatat(dfd, filename, &stat, flag);/' fs/stat.c
+          sed -i '/ksu_handle_sys_reboot(/ { N; s/\s*ksu_handle_sys_reboot(magic1, magic2, cmd, &arg);\s*\n\s*#endif/\tksu_handle_sys_reboot(magic1, magic2, cmd, \&arg);\n#endif\t/; }' kernel/reboot.c
           # susfs 2.0
           curl -Ls https://github.com/sidex15/android_kernel_lge_sm8150/commit/bb2f164bc19795ef704f17c82f04885d44421418.patch | sed -e 's/static void avc_dump_query(struct audit_buffer \*ab, struct selinux_state \*state,/static void avc_dump_query(struct audit_buffer \*ab, u32 ssid, u32 tsid, u16 tclass)/' -e 's/security_sid_to_context(state, /security_sid_to_context(/' | patch -p1 -F 3
           # increase mnt id
           curl -Ls https://github.com/sidex15/android_kernel_lge_sm8150/commit/1f4ef7d7978c4a74812c2445ebfac02fd451e068.patch | patch -p1 -F 3
           # dehook inline hooks
-          curl -Ls https://github.com/sidex15/android_kernel_lge_sm8150/commit/65fb7abff9ce217729b0c4cddf76e76522b636b6.patch | patch -p1 -F 3
+          curl -Ls https://github.com/sidex15/android_kernel_lge_sm8150/commit/65fb7abff9ce217729b0c4cddf76e76522b636b6.patch | sed '19,42d' | patch -p1 -F 3
           # Apply New SusFS KSUN Patch
           cd KernelSU
           curl -Ls https://github.com/sidex15/KernelSU-Next/commit/7200f73a7b4d0777217ead34fe9322978840df88.patch | patch -p1 -F 3
